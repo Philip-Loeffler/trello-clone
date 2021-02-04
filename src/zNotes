@@ -1,0 +1,12 @@
+when you define a class component, you need to provide 
+types for its props and state. 
+
+TypeScript when you create a functional component - you don’t have to provide types for it manually
+export const Example = () => {
+return <div>Functional component text</div>
+}
+Here we return a string wrapped into a <div/> element, so TypeScript will automat-
+ically conclude that the return type of our function is JSX.Element.
+
+
+column has children defined in it so in your app.tsx you can nest the card in it
