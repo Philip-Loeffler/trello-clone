@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 
 interface AppStateContextProps {
   state: AppState;
@@ -46,6 +46,10 @@ interface List {
 export interface AppState {
   lists: List[];
 }
+
+export const useAppState = () => {
+  return useContext(AppStateContext);
+};
 //component will only accept children, we dont have any other props so we pass an
 // an empty object as well
 export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {

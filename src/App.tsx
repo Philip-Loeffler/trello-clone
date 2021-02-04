@@ -3,19 +3,16 @@ import { AppContainer } from "./styles";
 import { Column } from "./Column";
 import { Card } from "./Card";
 import { AddNewItem } from "./AddNewItem";
+import { useAppState } from "./AppStateContext";
 
 function App() {
+  const { state } = useAppState();
   return (
     <AppContainer>
-      <Column text="To do">
-        <Card text="Generate app scafold"></Card>
-      </Column>
-      <Column text="To do">
-        <Card text="Generate app scafold"></Card>
-      </Column>
-      <Column text="To do">
-        <Card text="Generate app scafold"></Card>
-      </Column>
+      {state.lists.map((list, i) => (
+        <Column text={list.text} key={list.id} index={i} />
+      ))}
+
       <AddNewItem toggleButtonText="+ Add another list" onAdd={console.log} />
     </AppContainer>
   );
