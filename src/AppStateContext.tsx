@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react";
+import { overrideItemAtIndex, findItemIndexById } from "./utils/arrayUtils";
 import { nanoid } from "nanoid";
 interface AppStateContextProps {
   state: AppState;
@@ -86,9 +87,33 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
         ],
       };
     }
+
     case "ADD_TASK": {
+      //find the target list
+      const targetListIndex = findItemIndexById(
+        state.lists,
+        action.payload.listId
+      );
+      //save target list to const
+      const targetList = state.lists[targetListIndex];
+      //create a new object overriding the task field, use the spread operator
+      //to append a new task to the end of it
+      const updatedTargetList = {
+        ...targetList,
+        tasks: [
+          ...targetList.tasks,
+          { id: nanoid(), text: action.payload.text },
+        ],
+      };
+      //return the new state object whre we oride the list field using our function
+      //function takes the updated targed list and puts it to the rarget list indexposition
       return {
         ...state,
+        lists: overrideItemAtIndex(
+          state.lists,
+          updatedTargetList,
+          targetListIndex
+        ),
       };
     }
     default: {
