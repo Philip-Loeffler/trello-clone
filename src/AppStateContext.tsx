@@ -1,5 +1,9 @@
 import React, { createContext, useReducer, useContext } from "react";
-import { overrideItemAtIndex, findItemIndexById } from "./utils/arrayUtils";
+import {
+  overrideItemAtIndex,
+  findItemIndexById,
+  moveItem,
+} from "./utils/arrayUtils";
 import { nanoid } from "nanoid";
 interface AppStateContextProps {
   state: AppState;
@@ -64,7 +68,10 @@ type Action =
   | {
       type: "ADD_TASK";
       payload: { text: string; listId: string };
-    };
+    }
+  //when we start dragging the column, we remember the original position, and pass it a dragIndex
+  //and when we hover over other columns, we take their position and use them as a hover index
+  | { type: "MOVE_LIST"; payload: { dragIndex: number; hoverIndex: number } };
 
 //defining our appStateReducer
 const appStateReducer = (state: AppState, action: Action): AppState => {
@@ -85,6 +92,18 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
           //to the end of your array list
           { id: nanoid(), text: action.payload, tasks: [] },
         ],
+      };
+    }
+
+    case "MOVE_LIST": {
+      const { dragIndex, hoverIndex } = action.payload;
+      return {
+        ...state,
+        //Here we take dragIndex an hoverInde from the action payload. then calculate new value
+        // from the list array. to do this we use the move item function
+        //which will take the source array, and two indexes it will swap
+
+        lists: moveItem(state.lists, dragIndex, hoverIndex),
       };
     }
 

@@ -26,3 +26,15 @@ export function overrideItemAtIndex<T>(
     return newItem;
   });
 }
+
+//use the spread operator to generate a new array with a portion before,
+//the index that we get using the slice method, and the portion after the index
+//using the slice method with an index plus 1
+export function removeItemAtIndex<T>(array: T[], index: number) {
+  return [array.slice(0, index), ...array.slice(index + 1)];
+}
+
+export const moveItem = <T>(array: T[], from: number, to: number) => {
+  const item = array[from];
+  return insertItemAtIndex(removeItemAtIndex(array, from), item, to);
+};
